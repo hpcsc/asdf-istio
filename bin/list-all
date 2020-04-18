@@ -16,12 +16,7 @@ function query_releases() {
 }
 
 function grep_tag_names() {
-    local line
-    while IFS= read -r line; do
-        if [[ "${line}" =~ tag_name ]]; then
-            echo ${line} | sed 's/\"tag_name\":[[:space:]]*\"\(.*\)\",/\1/'
-        fi;
-    done
+    grep tag_name | sed 's/[[:space:]]*\"tag_name\":[[:space:]]*\"\(.*\)\",/\1/'
 }
 
 # stolen from https://github.com/rbenv/ruby-build/pull/631/files#diff-fdcfb8a18714b33b07529b7d02b54f1dR942
