@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+function query_releases() {
+    local releases_path=https://api.github.com/repos/istio/istio/releases
+    if [ -n "${GITHUB_API_TOKEN}" ]; then
+        curl -s \
+             -H "Authorization: token ${GITHUB_API_TOKEN}" \
+             $releases_path
+    else
+        curl -s \
+             $releases_path
+    fi
+}
+
+function grep_tag_names() {
+    local line
+    while IFS= read -r line; do
+        if [[ "${line}" =~ tag_name ]]; then
+            echo ${line} | sed 's/\"tag_name\":[[:space:]]*\"\(.*\)\",/\1/'
+        fi;
+    done
+}
+
+# stolen from https://github.com/rbenv/ruby-build/pull/631/files#diff-fdcfb8a18714b33b07529b7d02b54f1dR942
+function sort_versions() {
+  sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$//; G; s/\n/ /' | \
+    LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | awk '{print $2}'
+}
+
+query_releases | grep_tag_names | sort_versions
