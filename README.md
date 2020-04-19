@@ -12,7 +12,21 @@ asdf plugin-add istio https://github.com/hpcsc/asdf-istio.git
 
 ## Usage
 
-Check out the [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to install and manage versions of Istio releases.
+Check out the [asdf](https://github.com/asdf-vm/asdf) readme for general usage of asdf.
+
+Most common usage:
+
+```
+asdf list-all istio # to list available versions of Istio installation files
+asdf install istio [latest|x.y.z] # to get latest|x.y.z version of Istio installation files
+asdf global istio x.y.z # set version x.y.z as global
+```
+
+This plugin downloads Istio installation files (including YAML files, samples) into asdf predefined location. To check where is that location:
+
+```
+asdf where istio
+```
 
 ## Credits
 
